@@ -1,4 +1,4 @@
-# Data and Model can download in 
+# Data and Model
 https://drive.google.com/drive/folders/1hRAvNpZvGFHN8hiDOnNHoQhT__XuhUm9?usp=sharing
 
 
