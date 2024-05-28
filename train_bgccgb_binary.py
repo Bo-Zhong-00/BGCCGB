@@ -234,27 +234,6 @@ if __name__ == '__main__':
                 num_workers=0,
                 collate_fn=ds.pad,
             )
-        elif shuffle_choice == 2:
-            assert classes_weight is not None
-            assert total_resample_size > 0
-            weights = [
-                classes_weight[0]
-                if label == 0
-                else classes_weight[1]
-                if label == 1
-                else classes_weight[2]
-                for _, _, _, _, label in dataset
-            ]
-            sampler = WeightedRandomSampler(
-                weights, num_samples=total_resample_size, replacement=True
-            )
-            return DataLoader(
-                dataset=ds,
-                batch_size=batch_size,
-                sampler=sampler,
-                num_workers=0,
-                collate_fn=ds.pad,
-            )
 
 
     if args.validate_program:
