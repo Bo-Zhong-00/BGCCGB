@@ -191,7 +191,7 @@ for i in range(1, 7):
     domain_prec_list.append(precision)
 
     print(
-        f'Genome{i} 漏报: {fnr:.3f}, 误报: {fpr:.3f}, prec:{precision:.3f}, acc: {acc:.3f}')
+        f'Genome{i} fnr: {fnr:.3f}, fpr: {fpr:.3f}, prec:{precision:.3f}, acc: {acc:.3f}')
 
     pp = find_continuous_ones_indices(fixed_pred_domain)
     se.append(pp)
@@ -219,7 +219,7 @@ for i in range(1, 7):
     start_end.append(se)
 
 print(
-    f'\nDomain_Mean 漏报: {np.mean(domain_fnr_list):.3f}, 误报: {np.mean(domain_fpr_list):.3f}, prec:{np.mean(domain_prec_list):.3f}, acc: {np.mean(domain_acc_list):.3f}')
+    f'\nDomain_Mean fnr: {np.mean(domain_fnr_list):.3f}, fpr: {np.mean(domain_fpr_list):.3f}, prec:{np.mean(domain_prec_list):.3f}, acc: {np.mean(domain_acc_list):.3f}')
 
 
 sequence_titles = ['NC_007413.1', 'NC_004129.6', 'AM420293.1', 'AP009493.1', 'NC_009380.1', 'AM746676.1']
