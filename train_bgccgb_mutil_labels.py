@@ -81,7 +81,6 @@ cfg_adj_tf_threshold = 0
 classifier_act_func = nn.ReLU()
 
 do_softmax_before_mse = True
-# cfg_loss_criterion = "cle"
 cfg_loss_criterion = "mse"
 model_file_4save = (
     f"mutil_classification.pt"
@@ -271,8 +270,6 @@ total_train_steps = int(
 def evaluate(
         model, gcn_adj_list, predict_dataloader, batch_size, epoch_th, dataset_name
 ):
-    # print("***** Running prediction *****")
-    # log = "\n***** Running prediction *****"
     model.eval()
     all_label_ids = []
     predict_out = []
@@ -319,11 +316,6 @@ def evaluate(
         )
 
     end = time.time()
-    # log += f"\nEpoch : {epoch_th}, {perform_metrics_str}: {100 * f1_metrics:.2f}" \
-    #        f" Spend: {(end - start) / 60.0:.2f} minutes for evaluation"
-    # log_file.write(log)
-    # print(log)
-    # print("--------------------------------------------------------------")
     return ev_loss, f1_metrics
 
 
@@ -461,16 +453,6 @@ for epoch in range(start_epoch, total_train_epochs):
     print("\nEpoch:{} completed, Total Train Loss:{:.4f}, Valid Loss:{:.4f},Spend {:.2f}m "
           .format(epoch, tr_loss, valid_loss, (time.time() - train_start) / 60.0))
 
-# print(
-#     "\n**Optimization Finished!,Total spend:",
-#     (time.time() - train_start) / 60.0,
-# )
-# log = "\n**Optimization Finished!,Total spend:" + str((time.time() - train_start) / 60.0)
-# print(
-#     "**Valid weighted F1: %.3f at %d epoch."
-#     % (100 * perform_metrics_prev, valid_f1_best_epoch)
-# )
-# log += f"\n**Valid weighted F1: {100 * perform_metrics_prev} at {valid_f1_best_epoch} epoch."
 
 def test_model(
         model, gcn_adj_list, predict_dataloader, batch_size, dataset_name
@@ -509,11 +491,6 @@ def test_model(
                 loss = F.mse_loss(logits, y_prob)
                 l = change(logits)
                 y_p = change(y_prob)
-                # num, true = count_acc(l, y_p)
-                # recall, precision = count_RnP(l, y_p)
-                # for k in range(len(precision_list)):
-                #     recall_list[k] += recall[k]
-                #     precision_list[k] += precision[k]
 
                 for cls in range(num_classes):
                     y_true_cls = y_prob[:, cls].cpu().numpy()  # 真实标签的某个类别的概率
@@ -558,10 +535,7 @@ def test_model(
             auroc_list[i] /= count
             recall_list[i] /= count
             precision_list[i] /= count
-
-    # print(f'Acc:{np.sum(true) / np.sum(num)}')
-    # print(f'num:{num}')
-    # print(f'true:{true}')
+            
     ev_acc = correct / total
     end = time.time()
     log += f"\n{perform_metrics_str}: {100 * f1_metrics:.2f} Acc : {100.0 * ev_acc:.2f} " \
@@ -569,11 +543,7 @@ def test_model(
     log += f'\nAvg AUROC: {np.mean(auroc_list):.3f}'
     log += f"\nAUROC: {auroc_list[0]:.3f}, {auroc_list[1]:.3f}, {auroc_list[2]:.3f}, {auroc_list[3]:.3f}, {auroc_list[4]:.3f}" \
            f" {auroc_list[5]:.3f}, {auroc_list[6]:.3f}"
-    # log += f"\nRecall: {recall_list[0]:.2f}, {recall_list[1]:.3f}, {recall_list[2]:.3f}, {recall_list[3]:.3f}, {recall_list[4]:.3f}" \
-    #        f" {recall_list[5]:.3f}, {recall_list[6]:.3f}, Avg: {np.mean(recall_list):.3f}"
-    # log += f"\nPercision: {precision_list[0]:.2f}, {precision_list[1]:.3f}, {precision_list[2]:.3f}, {precision_list[3]:.3f}, {precision_list[4]:.3f}" \
-    #        f" {precision_list[5]:.3f}, {precision_list[6]:.3f}, Avg: {np.mean(precision_list):.3f}"
-    # log_file.write(log)
+
     print(log)
 
 
