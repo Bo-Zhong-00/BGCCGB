@@ -153,7 +153,7 @@ cuda_yes = torch.cuda.is_available()
 device = torch.device("cuda:0" if cuda_yes else "cpu")
 
 for i in range(len(names)):
-    datafile = "data/preprocessed/binary_no_eda/data.%s" % (names[i])
+    datafile = "data/preprocessed/binary_eda/data.%s" % (names[i])
     with open(datafile, "rb") as f:
         objects.append(pkl.load(f, encoding="latin1"))
 
@@ -218,10 +218,9 @@ precision_list = []
 
 log_file = open(f'output/eda_binary/925_6_log.txt', 'w')
 y_file = open(f'output/eda_binary/925_6_pred_array.txt', 'w')
-log_file.write(f'{datetime.datetime.now()}\nmodel:{model_file},\n'
-               f'tf-idf mode:{tfidf_mode}, v_adj={v_adj}, npmi_threshold:{adj_npmi_threshold}\n')
+log_file.write(f'{datetime.datetime.now()}\nmodel:{model_file}\n')
 
-dump_dir = 'data/preprocessed/eda_binary'
+dump_dir = 'data/preprocessed/binary_eda'
 
 for i in range(1, 7):
     domains_file = open(f'data/6_genomes/g{i}.txt', 'r')
