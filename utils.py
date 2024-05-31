@@ -372,10 +372,9 @@ def count_acc(pred, labels):
 
 def find_similar_proteins(file_path, pf2domain, vocab, threshold):
     from sklearn.metrics.pairwise import cosine_similarity
-    # 读取CSV文件
+    
     df = pd.read_csv(file_path)
 
-    # 提取蛋白质名称和嵌入
     protein_names = []
     embeddings = []
     for i, row in df.iterrows():
@@ -385,28 +384,18 @@ def find_similar_proteins(file_path, pf2domain, vocab, threshold):
             protein_names.append(name)
             embeddings.append(emb)
 
-    # 计算余弦相似度
     similarity_matrix = cosine_similarity(embeddings)
 
-    # 初始化结果字典
     similar_proteins = {}
 
-    # 遍历每个蛋白质
     for idx, protein in enumerate(protein_names):
-        # 排除自身，找到与其他蛋白质的相似度
         if type(protein) is not str or protein not in pf2domain.keys():
             continue
         similarities = similarity_matrix[idx]
         similar_indices = np.where(similarities > threshold)[0]
         similar_indices = similar_indices[similar_indices != idx]
-
-        # 获取相似度大于阈值的蛋白质名称
         similar_proteins_list = [(vocab[pf2domain[protein_names[i]]], similarities[i]) for i in similar_indices]
-
-        # 按相似度排序并取前3个
         similar_proteins_list = sorted(similar_proteins_list, key=lambda x: x[1], reverse=True)[:3]
-
-        # 保存结果
         similar_proteins[vocab[pf2domain[protein]]] = [p[0] for p in similar_proteins_list]
 
     return similar_proteins
